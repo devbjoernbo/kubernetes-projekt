@@ -28,7 +28,7 @@ then
   if [ "$2" = "commit" ]
   then
     echo "Adding new files and file changes to commit-stage"
-    # Build containers and run then 
+    # add files to git-local
     git add .
 
     if [ $? = 0 ]
@@ -36,12 +36,22 @@ then
       echo "Succesfully added files and changes"
       echo "Commiting files to git repository"
 
+      # commit files to git-local 
       git commit -m "$3"
 
       if [ $? = 0 ]
       then
         echo "Succesfully commited files"
-    
+
+        # push files to git-remote 
+        git push origin master
+
+        if [ $? = 0 ]
+        then
+          echo "Succesfully pushed files to git-remote"
+        else
+          echo "There was a problem during pushing process"
+        fi
       else
         echo "There was a problem during commiting process"
       fi
