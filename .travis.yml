@@ -1,0 +1,24 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t devbjoernbodk/react-test -f ./worker/Dockerfile.dev ./worker
+
+script:
+  - docker run devbjoernbodk/react-test
+
+after_success:
+  - docker build -t devbjoernbodk/docker-kubernetes-web-client ./web-client
+  - docker build -t devbjoernbodk/docker-kubernetes-web-tests ./web-tests
+  - docker build -t devbjoernbodk/docker-kubernetes-nginx ./nginx
+  - docker build -t devbjoernbodk/docker-kubernetes-api-server ./api-server
+  - docker build -t devbjoernbodk/docker-kubernetes-worker ./worker
+  #  Log in to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Tage those images and push them to docker hub
+  - docker push devbjoernbodk/docker-kubernetes-web-client
+  - docker push devbjoernbodk/docker-kubernetes-web-tests
+  - docker push devbjoernbodk/docker-kubernetes-nginx
+  - docker push devbjoernbodk/docker-kubernetes-api-server
+  - docker push devbjoernbodk/docker-kubernetes-worker
