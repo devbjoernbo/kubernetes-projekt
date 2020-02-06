@@ -1,5 +1,7 @@
 version: "3"
 services:
+  postgres:
+    image: "postgres:latest"
   redis:
     image: "redis:latest"
     ports:
@@ -16,18 +18,15 @@ services:
     ports:
       - "4000:80"
       - "8080:80"
+    depends_on:
+      - api-server
+      - web-client
   web-client:
     build:
       dockerfile: Dockerfile.dev
       context: ./web-client
     volumes:
       - ./web-client:/app
-  # mobile-client:
-  #   build:
-  #     dockerfile: Dockerfile.dev
-  #     context: ./mobileClient
-  #   volumes:
-  #     - ./mobile-client:/app
   api-server:
     build:
       dockerfile: Dockerfile.dev
@@ -36,4 +35,32 @@ services:
       - ./api-server:/app
     depends_on:
       - mongo
+      - redis
+      - postgres
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - PGUSER=postgres
+      - PGHOST=postgres
+      - PGDATABASE=postgres
+      - PGPASSWORD=postgres_password
+      - PGPORT=5432
+      - MONGO_PORT=mongo:27017
+      - MONGO_DATABASE=the_capitalist_v1
+  web-tests:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./web-tests
+    volumes:
+      - ./web-tests:/app
+  worker:
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./worker
+    volumes:
+      - ./worker:/app
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
       - redis

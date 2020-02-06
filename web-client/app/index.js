@@ -6,6 +6,7 @@ import apolloClient from "./services/apollo_client/apollo_client";
 import AuthenticationProvider from "./context/authentication/auth_provider";
 
 import { createGlobalStyle } from "styled-components";
+import MainRouter from "./components/MainRouter";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -20,7 +21,7 @@ const App = () => {
     <ApolloProvider client={apolloClient}>
       <AuthenticationProvider>
         <GlobalStyle />
-        <div>Test WebClient</div>
+        <MainRouter />
       </AuthenticationProvider>
     </ApolloProvider>
   );

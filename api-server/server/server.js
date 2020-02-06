@@ -6,7 +6,11 @@ const bodyParser = require("body-parser");
 const passport = require("passport");
 
 // initialize services
-const { apolloServer } = require("./setup/setup_services");
+const {
+  apolloServer,
+  postgreClient,
+  redisUtils
+} = require("./setup/setup_services");
 
 // initialize app;
 const app = express();
@@ -39,6 +43,37 @@ apolloServer.applyMiddleware({
   app,
   path: "/graphql",
   cors: { credentials: true, origin: "http://localhost:4000" }
+});
+
+// Express route handlers
+app.get("/", (req, res) => {
+  res.send("Hi");
+});
+
+app.get("/values/all", async (req, res) => {
+  const values = await postgreClient.query("SELECT * from values");
+
+  res.send(values.rows);
+});
+
+app.get("/values/current", async (req, res) => {
+  const values = await redisUtils.redisClient.hgetall("values");
+
+  res.send(values);
+});
+
+app.post("/values", async (req, res) => {
+  const index = req.body.index;
+
+  if (parseInt(index) > 40) {
+    return res.status(422).send("Index too high");
+  }
+
+  redisUtils.redisClient.hset("values", index, "Nothing yet!");
+  redisUtils.redisPublisher.publish("insert", index);
+  postgreClient.query("INSERT INTO values(number) VALUES($1)", [index]);
+
+  res.send({ working: true });
 });
 
 app.listen(3000, function() {

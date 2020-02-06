@@ -4,7 +4,7 @@
 # ./runScript.sh docker build
 # ./runScript.sh git commit name_of_commit
 
-
+# Docker
 if [ "$1" = "docker" ]
 then
   if [ "$2" = "build" ]
@@ -22,11 +22,7 @@ then
   fi
 fi
 
-
-# setting git-config
-# git config --global user.name "Nicolai Christensen"
-# git config --global user.email "nicolai.bjornbo@hotmail.com"
-
+# Git
 # Add file changes and new files, commit to git and push to git-remote
 if [ "$1" = "git" ]
 then
