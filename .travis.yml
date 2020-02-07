@@ -9,16 +9,27 @@ script:
   - docker run devbjoernbodk/react-test
 
 after_success:
-  - docker build -t devbjoernbodk/docker-kubernetes-web-tests ./web-tests
-  - docker build -t devbjoernbodk/docker-kubernetes-nginx ./nginx
-  - docker build -t devbjoernbodk/docker-kubernetes-api-server ./api-server
-  - docker build -t devbjoernbodk/docker-kubernetes-worker ./worker
-  - docker build -t devbjoernbodk/docker-kubernetes-web-client ./web-client
+  - docker build -t devbjoernbodk/kubernetes-web-tests ./web-tests
+  - docker build -t devbjoernbodk/kubernetes-nginx ./nginx
+  - docker build -t devbjoernbodk/kubernetes-api-server ./api-server
+  - docker build -t devbjoernbodk/kubernetes-worker ./worker
+  - docker build -t devbjoernbodk/kubernetes-web-client ./web-client
   #  Log in to the docker CLI
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Tage those images and push them to docker hub
-  - docker push devbjoernbodk/docker-kubernetes-web-tests
-  - docker push devbjoernbodk/docker-kubernetes-nginx
-  - docker push devbjoernbodk/docker-kubernetes-api-server
-  - docker push devbjoernbodk/docker-kubernetes-worker
-  - docker push devbjoernbodk/docker-kubernetes-web-client
+  - docker push devbjoernbodk/kubernetes-nginx
+  - docker push devbjoernbodk/kubernetes-api-server
+  - docker push devbjoernbodk/kubernetes-worker
+  - docker push devbjoernbodk/kubernetes-web-client
+# deploy:
+#   provider: elasticbeanstalk
+#   region: us-west-1
+#   app: multi-docker
+#   env: MultiDocker-env
+#   bucket_name: elasticbeanstalk-us-west-1-306476627547
+#   bucket_path: docker-multi
+#   on:
+#     branch: master
+#   access_key_id: $AWS_ACCESS_KEY
+#   secret_access_key:
+#     secure: $AWS_SECRET_KEY
