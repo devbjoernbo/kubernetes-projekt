@@ -9,7 +9,7 @@ const GRAPH_LIBS = ["graphql", "graphql-tag"];
 
 module.exports = env => {
   return {
-    mode: "development",
+    mode: "production",
     entry: {
       client: "./app/index.js",
       vendor: VENDOR_LIBS,
@@ -17,23 +17,24 @@ module.exports = env => {
       //   apollo: APOLLO_LIBS
     },
     // generating corret errormessages in browser
-    devtool: "inline-source-map",
-    devServer: {
-      contentBase: __dirname,
-      disableHostCheck: true,
-      port: 8080
-    },
+    // devtool: "inline-source-map",
+    devtool: "source-map",
+    // devServer: {
+    //   contentBase: __dirname,
+    //   disableHostCheck: true,
+    //   port: 8080
+    // },
     output: {
       filename: "[name].[chunkHash].js",
-      chunkFilename: "[name].[chunkHash].js",
-      path: path.resolve(__dirname, "dist"),
-      publicPath: "dist/"
+      // chunkFilename: "[name].[chunkHash].js",
+      path: path.resolve(__dirname, "dist")
+      // publicPath: "dist/"
     },
-    optimization: {
-      splitChunks: {
-        chunks: "all"
-      }
-    },
+    // optimization: {
+    //   splitChunks: {
+    //     chunks: "all"
+    //   }
+    // },
     module: {
       rules: [
         {
@@ -76,12 +77,12 @@ module.exports = env => {
       new HtmlWebpackPlugin({
         title: "Home App",
         template: "template.html"
-      }),
-      new CompressionPlugin({
-        test: /\.js(\?.*)?$/i,
-        compressionOptions: { level: 1 },
-        algorithm: "gzip"
       })
+      // new CompressionPlugin({
+      //   test: /\.js(\?.*)?$/i,
+      //   compressionOptions: { level: 1 },
+      //   algorithm: "gzip"
+      // })
     ],
     watchOptions: {
       aggregateTimeout: 300,
