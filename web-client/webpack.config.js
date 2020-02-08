@@ -75,8 +75,7 @@ module.exports = env => {
     plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
-        title: "Home App",
-        template: "template.html"
+        title: "Production App"
       })
       // new CompressionPlugin({
       //   test: /\.js(\?.*)?$/i,
@@ -84,10 +83,10 @@ module.exports = env => {
       //   algorithm: "gzip"
       // })
     ],
-    watchOptions: {
-      aggregateTimeout: 300,
-      poll: 1000
-    },
+    // watchOptions: {
+    //   aggregateTimeout: 300,
+    //   poll: 1000
+    // },
     // example of import: import Utility from 'Utilities/utility'
     resolve: {
       alias: {
