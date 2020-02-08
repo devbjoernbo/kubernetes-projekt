@@ -29,10 +29,10 @@ class Fib extends Component {
   }
 
   async fetchIndexes() {
-    // const seenIndexes = await axios.get("/api/values/all");
-    // this.setState({
-    //   seenIndexes: seenIndexes.data
-    // });
+    const seenIndexes = await axios.get("/api/values/all");
+    this.setState({
+      seenIndexes: seenIndexes.data
+    });
   }
 
   async handleSubmit(event) {
