@@ -27,7 +27,7 @@ module.exports = env => {
       filename: "[name].[chunkHash].js",
       chunkFilename: "[name].[chunkHash].js",
       path: path.resolve(__dirname, "dist"),
-      publicPath: "/dist/"
+      publicPath: "dist/"
     },
     optimization: {
       splitChunks: {
