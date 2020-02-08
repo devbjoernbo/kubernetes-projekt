@@ -26,7 +26,7 @@ module.exports = env => {
     // },
     output: {
       filename: "[name].[chunkHash].js",
-      // chunkFilename: "[name].[chunkHash].js",
+      chunkFilename: "[name].[chunkHash].js",
       path: path.resolve(__dirname, "dist")
       // publicPath: "dist/"
     },
@@ -75,13 +75,14 @@ module.exports = env => {
     plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
-        title: "Production App"
+        title: "Production App",
+        template: "template.html"
+      }),
+      new CompressionPlugin({
+        test: /\.js(\?.*)?$/i,
+        compressionOptions: { level: 1 },
+        algorithm: "gzip"
       })
-      // new CompressionPlugin({
-      //   test: /\.js(\?.*)?$/i,
-      //   compressionOptions: { level: 1 },
-      //   algorithm: "gzip"
-      // })
     ],
     // watchOptions: {
     //   aggregateTimeout: 300,
